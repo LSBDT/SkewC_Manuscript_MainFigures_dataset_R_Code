@@ -1,0 +1,177 @@
+---
+title:  "GSE53386"
+author: "Imad Abugessaisa"
+date:   "Jun 05, 2019"
+output: html_document
+---
+
+```{r echo=FALSE}
+options(width=100)
+knitr::opts_knit$set(verbose = TRUE)
+```
+
+## Perform apoptosis analysis on GSE53386
+
+```{r cars}
+library(dplyr)
+library(Rmisc)
+library(ggplot2)
+library(knitr)
+library(reshape2)
+```
+
+Summary
+-------
+## extract the FPKM table GSE53386_FPKM_mereged_Apoptosis_genes
+The 'GSE53386_FPKM_mereged_Apoptosis_genes' table was gerangray
+
+``` {r reshap and matrix formtting}
+GSE53386Coverage_means_DF_melted  <-  melt(GSE53386Coverage_means_DF,id=c("Annotation"))
+
+## reanme annoation column values
+GSE53386Coverage_means_DF_melted[1:860,1] <- "GSE53386"
+write.table(GSE53386Coverage_means_DF$Annotation,file ="GSE53386_cellids.tsv",sep = "\t",quote = F,
+            row.names = F,col.names = F)
+```
+
+## Plotting of the mean coveage graph
+```{r plotting}
+GSE53386Coverage_means_DF_melted_tgc <-
+  summarySE(GSE53386Coverage_means_DF_melted,measurevar = "value",groupvars =c("Annotation","variable"))
+GSE53386Coverage_means_DF_melted_pd <-
+ # position_dodge(0.1) # move them .05 to the left and right
+png(filename = "./GSE53386_mean_cov.png",width = 400,height = 400,res = 70)
+ meanPlot <- ggplot(GSE53386Coverage_means_DF_melted_tgc, aes(x=variable, y=value)) +
+  geom_errorbar(aes(ymin=value-ci, ymax=value+ci)) +
+  geom_line(aes(group=Annotation)) 
+meanPlot =meanPlot+ geom_point(aes(group=1), size=2, shape=21, fill="white") + 
+  scale_x_discrete(labels  = c(10, 20,30,40,50,60,70,80,90,100)) + 
+  labs(x= "μ of the gene body percentile (5'-> 3')") + 
+  labs(y= "Gene coverage")+
+  labs(title ="mES | GSE53386 | SUPer-seq")
+meanPlot =meanPlot+ theme(plot.title = element_text(face = "bold", colour="black", size = 20,margin=margin(0,0,3,0))) 
+meanPlot =meanPlot+ theme(axis.ticks = element_line(colour = 'black',size = 1.2,linetype = 'dashed'))
+meanPlot =meanPlot+ theme(axis.ticks.length=unit(.2, "cm"))
+meanPlot =meanPlot+ theme(axis.title.x = element_text(face="bold", colour="black", size=18,family = "Times")) 
+meanPlot =meanPlot+ theme(axis.title.y = element_text(face = "bold", colour="black", size=18,family = "Times"))
+meanPlot =meanPlot+ theme(legend.position="none")
+meanPlot =meanPlot+ theme(axis.text = element_text(face = "bold", colour="black", size=18)) 
+meanPlot =meanPlot+ theme(panel.border  = element_rect(colour = "black",fill = NA,size = 2.2),panel.background = element_rect(fill = NA))
+meanPlot =meanPlot+ theme(plot.title = element_text(hjust = 0.5))
+
+meanPlot
+dev.off()
+```
+
+
+```{r plot full coverage}
+pdf(
+  "./GSE53386_full_cov.pdf")
+  x = 1:100
+ 
+   color=rgb(0,0,0,alpha=0.25) 
+   par(mai=c(0.82,0.82,0.41,0.12))
+    plot(
+  x,
+ SRR1051260,col.axis="black",font.axis=2,
+  type = 'l',col= color,
+ main = list("mES | GSE53386 | SUPer-seq",cex=1.5,col = "black",font=2),
+ ylab = list("Gene coverage", col = "black",cex=1.5,font=2),
+ xlab = list("Gene body percentile (5'-> 3')", col = "black",cex=1.5,font=2),
+ col.main = "blue",cex.lab=3,font.lab=2)
+lines(x,SRR1051261,type='l',col= color)
+lines(x,SRR1051262,type='l',col= color)
+lines(x,SRR1051263,type='l',col= color)
+lines(x,SRR1051264,type='l',col= color)
+lines(x,SRR1051265,type='l',col= color)
+lines(x,SRR1051266,type='l',col= color)
+lines(x,SRR1051267,type='l',col= color)
+lines(x,SRR1051268,type='l',col= color)
+lines(x,SRR1051269,type='l',col= color)
+lines(x,SRR1051270,type='l',col= color)
+lines(x,SRR1051271,type='l',col= color)
+lines(x,SRR1051272,type='l',col= color)
+lines(x,SRR1051273,type='l',col= color)
+lines(x,SRR1051274,type='l',col= color)
+lines(x,SRR1051275,type='l',col= color)
+lines(x,SRR1051276,type='l',col= color)
+lines(x,SRR1051277,type='l',col= color)
+lines(x,SRR1051278,type='l',col= color)
+lines(x,SRR1051279,type='l',col= color)
+lines(x,SRR1051280,type='l',col= color)
+lines(x,SRR1051281,type='l',col= color)
+lines(x,SRR1051282,type='l',col= color)
+lines(x,SRR1051284,type='l',col= color)
+lines(x,SRR1051285,type='l',col= color)
+lines(x,SRR1051288,type='l',col= color)
+lines(x,SRR1051289,type='l',col= color)
+lines(x,SRR1051290,type='l',col= color)
+lines(x,SRR1051291,type='l',col= color)
+lines(x,SRR1051302,type='l',col= color)
+lines(x,SRR1104743,type='l',col= color)
+lines(x,SRR1567916,type='l',col= color)
+lines(x,SRR1567917,type='l',col= color)
+lines(x,SRR1567918,type='l',col= color)
+lines(x,SRR1567919,type='l',col= color)
+lines(x,SRR1567920,type='l',col= color)
+lines(x,SRR1567921,type='l',col= color)
+lines(x,SRR1567922,type='l',col= color)
+lines(x,SRR1567923,type='l',col= color)
+lines(x,SRR1567924,type='l',col= color)
+lines(x,SRR1567925,type='l',col= color)
+lines(x,SRR1567926,type='l',col= color)
+lines(x,SRR1567927,type='l',col= color)
+lines(x,SRR1567928,type='l',col= color)
+lines(x,SRR1567929,type='l',col= color)
+lines(x,SRR1567930,type='l',col= color)
+lines(x,SRR1567931,type='l',col= color)
+lines(x,SRR1567932,type='l',col= color)
+lines(x,SRR1567933,type='l',col= color)
+lines(x,SRR1567934,type='l',col= color)
+lines(x,SRR1567935,type='l',col= color)
+lines(x,SRR1567936,type='l',col= color)
+lines(x,SRR1567937,type='l',col= color)
+lines(x,SRR1567938,type='l',col= color)
+lines(x,SRR1567939,type='l',col= color)
+lines(x,SRR2048235,type='l',col= color)
+lines(x,SRR2048236,type='l',col= color)
+lines(x,SRR2048237,type='l',col= color)
+lines(x,SRR2048238,type='l',col= color)
+lines(x,SRR2048239,type='l',col= color)
+lines(x,SRR2048240,type='l',col= color)
+lines(x,SRR2048241,type='l',col= color)
+lines(x,SRR2048242,type='l',col= color)
+lines(x,SRR2048243,type='l',col= color)
+lines(x,SRR2048244,type='l',col= color)
+lines(x,SRR2048245,type='l',col= color)
+lines(x,SRR2048246,type='l',col= color)
+lines(x,SRR2048247,type='l',col= color)
+lines(x,SRR2048248,type='l',col= color)
+lines(x,SRR2048249,type='l',col= color)
+lines(x,SRR2048250,type='l',col= color)
+lines(x,SRR2048251,type='l',col= color)
+lines(x,SRR2048252,type='l',col= color)
+lines(x,SRR2048253,type='l',col= color)
+lines(x,SRR2048254,type='l',col= color)
+lines(x,SRR2048255,type='l',col= color)
+lines(x,SRR2048256,type='l',col= color)
+lines(x,SRR2048258,type='l',col= color)
+lines(x,SRR2048259,type='l',col= color)
+lines(x,SRR2048260,type='l',col= color)
+lines(x,SRR2048261,type='l',col= color)
+lines(x,SRR2048262,type='l',col= color)
+lines(x,SRR2048263,type='l',col= color)
+lines(x,SRR2048264,type='l',col= color)
+lines(x,SRR2048265,type='l',col= color)
+lines(x,SRR2048266,type='l',col= color)
+box(lty = "solid", col = 'black',lwd=3)
+axis(side=1,lwd=2,lwd.ticks=4,col.ticks="black")
+axis(side=2,lwd=3,lwd.ticks=4,col.ticks="black")
+dev.off()
+```
+
+
+dev.off()
+
+```
+

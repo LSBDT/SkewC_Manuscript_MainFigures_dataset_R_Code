@@ -1,0 +1,105 @@
+---
+title:  "GSE46980"
+author: "Imad Abugessaisa"
+date:   "Jun 06, 2019"
+output: html_document
+---
+
+```{r echo=FALSE}
+options(width=100)
+knitr::opts_knit$set(verbose = TRUE)
+```
+
+## Perform apoptosis analysis on GSE46980 DEAD cells only
+
+```{r cars}
+library(dplyr)
+library(Rmisc)
+library(ggplot2)
+library(knitr)
+library(reshape2)
+```
+
+Summary
+-------
+
+
+``` {r reshap and matrix formtting}
+library(dplyr)
+GSE46980Coverage_means_DF_R1_DEAD_cells <- subset(GSE46980Coverage_means_DF,Annotation %in% GSE46980_R1_Metadata_DEAD_cells$x)
+GSE46980Coverage_means_DF_R1_DEAD_cells_melted  <-  melt(GSE46980Coverage_means_DF_R1_DEAD_cells,id=c("Annotation"))
+## reanme annoation column values
+GSE46980Coverage_means_DF_R1_DEAD_cells_melted[1:90,1] <- "GSE46980"
+write.table(GSE46980_R1_Metadata_DEAD_cells$x,file = "GSE46980_deadcells.tsv",sep = "\t",row.names = F,quote = F,col.names = F)
+
+```
+
+## Plotting of the mean coveage graph
+```{r plotting}
+GSE46980Coverage_means_DF_R1_DEAD_cells_melted_tgc <-
+  summarySE(GSE46980Coverage_means_DF_R1_DEAD_cells_melted,measurevar = "value",groupvars =c("Annotation","variable"))
+GSE46980Coverage_means_DF_R1_DEAD_cells_melted_pd <-
+ # position_dodge(0.1) # move them .05 to the left and right
+png(filename = "./GSE46980_meanDEADCElls_cov.png",width = 400,height = 400,res = 70)
+ meanPlot <- ggplot(GSE46980Coverage_means_DF_R1_DEAD_cells_melted_tgc, aes(x=variable, y=value)) +
+  geom_errorbar(aes(ymin=value-ci, ymax=value+ci)) +
+  geom_line(aes(group=Annotation)) 
+meanPlot =meanPlot+ geom_point(aes(group=1), size=2, shape=21, fill="white") + 
+  scale_x_discrete(labels  = c(10, 20,30,40,50,60,70,80,90,100)) + 
+  labs(x= "μ of the gene body percentile (5'-> 3')") + 
+  labs(y= "Gene coverage")+
+  labs(title ="mES|GSE46980|dead cells|STRT|(n=9)")
+meanPlot =meanPlot+ theme(plot.title = element_text(face = "bold", colour="black", size = 20,margin=margin(0,0,3,0))) 
+meanPlot =meanPlot+ theme(axis.ticks = element_line(colour = 'black',size = 1.2,linetype = 'dashed'))
+meanPlot =meanPlot+ theme(axis.ticks.length=unit(.2, "cm"))
+meanPlot =meanPlot+ theme(axis.title.x = element_text(face="bold", colour="black", size=18,family = "Times")) 
+meanPlot =meanPlot+ theme(axis.title.y = element_text(face = "bold", colour="black", size=18,family = "Times"))
+meanPlot =meanPlot+ theme(legend.position="none")
+meanPlot =meanPlot+ theme(axis.text = element_text(face = "bold", colour="black", size=18)) 
+meanPlot =meanPlot+ theme(panel.border  = element_rect(colour = "black",fill = NA,size = 2.2),panel.background = element_rect(fill = NA))
+meanPlot =meanPlot+ theme(plot.title = element_text(hjust = 0.5))
+
+meanPlot
+dev.off()
+```
+
+
+```{r plot full coverage}
+png(
+  "./GSE46980_full_cov_R1_deladcells.png",
+  width = 400,
+  height = 400,
+  res = 70
+  )
+  x = 1:100
+ 
+   color=rgb(0,0,0,alpha=0.25) 
+   par(mai=c(0.82,0.82,0.41,0.12))
+    plot(
+  x,
+ SRR1043253,col.axis="black",font.axis=2,
+  type = 'l',col= color,
+ main = list("mES|GSE46980|dead cells|STRT|(n=9)",cex=1.5,col = "black",font=2),
+ ylab = list("Gene coverage", col = "black",cex=1.5,font=2),
+ xlab = list("Gene body percentile (5'-> 3')", col = "black",cex=1.5,font=2),
+ col.main = "blue",cex.lab=3,font.lab=2)
+lines(x,SRR1043247,type='l',col= color)
+lines(x,SRR1043271,type='l',col= color)
+lines(x,SRR1043349,type='l',col= color)
+lines(x,SRR1043331,type='l',col= color)
+lines(x,SRR1043357,type='l',col= color)
+lines(x,SRR1043379,type='l',col= color)
+lines(x,SRR1043207,type='l',col= color)
+lines(x,SRR1043233,type='l',col= color)
+
+box(lty = "solid", col = 'black',lwd=3)
+axis(side=1,lwd=2,lwd.ticks=4,col.ticks="black")
+axis(side=2,lwd=3,lwd.ticks=4,col.ticks="black")
+dev.off()
+```
+
+
+dev.off()
+
+```
+

@@ -1,0 +1,187 @@
+---
+title:  "PRJDB5282"
+author: "Imad Abugessaisa"
+date:   "Jun 05, 2019"
+output: html_document
+---
+
+```{r echo=FALSE}
+options(width=100)
+knitr::opts_knit$set(verbose = TRUE)
+```
+
+## Perform apoptosis analysis on PRJDB5282
+
+```{r cars}
+library(dplyr)
+library(Rmisc)
+library(ggplot2)
+library(knitr)
+library(reshape2)
+```
+
+Summary
+-------
+## extract the FPKM table PRJDB5282_FPKM_mereged_Apoptosis_genes
+The 'PRJDB5282_FPKM_mereged_Apoptosis_genes' table was gerangray
+
+``` {r reshap and matrix formtting}
+PRJDB5282Coverage_means_DF_melted  <-  melt(PRJDB5282Coverage_means_DF,id=c("Annotation"))
+
+## reanme annoation column values
+PRJDB5282Coverage_means_DF_melted[1:960,1] <- "PRJDB5282"
+write.table(PRJDB5282Coverage_means_DF$Annotation,file ="PRJDB5282_cellids.tsv",sep = "\t",quote = F,
+            row.names = F,col.names = F)
+```
+
+## Plotting of the mean coveage graph
+```{r plotting}
+PRJDB5282Coverage_means_DF_melted_tgc <-
+  summarySE(PRJDB5282Coverage_means_DF_melted,measurevar = "value",groupvars =c("Annotation","variable"))
+PRJDB5282Coverage_means_DF_melted_pd <-
+ # position_dodge(0.1) # move them .05 to the left and right
+png(filename = "./PRJDB5282_mean_cov.png",width = 400,height = 400,res = 70)
+ meanPlot <- ggplot(PRJDB5282Coverage_means_DF_melted_tgc, aes(x=variable, y=value)) +
+  geom_errorbar(aes(ymin=value-ci, ymax=value+ci)) +
+  geom_line(aes(group=Annotation)) 
+meanPlot =meanPlot+ geom_point(aes(group=1), size=2, shape=21, fill="white") + 
+  scale_x_discrete(labels  = c(10, 20,30,40,50,60,70,80,90,100)) + 
+  labs(x= "μ of the gene body percentile (5'-> 3')") + 
+  labs(y= "Gene coverage")+
+  labs(title ="mES | PRJDB5282 | C1 CAGE")
+meanPlot =meanPlot+ theme(plot.title = element_text(face = "bold", colour="black", size = 20,margin=margin(0,0,3,0))) 
+meanPlot =meanPlot+ theme(axis.ticks = element_line(colour = 'black',size = 1.2,linetype = 'dashed'))
+meanPlot =meanPlot+ theme(axis.ticks.length=unit(.2, "cm"))
+meanPlot =meanPlot+ theme(axis.title.x = element_text(face="bold", colour="black", size=18,family = "Times")) 
+meanPlot =meanPlot+ theme(axis.title.y = element_text(face = "bold", colour="black", size=18,family = "Times"))
+meanPlot =meanPlot+ theme(legend.position="none")
+meanPlot =meanPlot+ theme(axis.text = element_text(face = "bold", colour="black", size=18)) 
+meanPlot =meanPlot+ theme(panel.border  = element_rect(colour = "black",fill = NA,size = 2.2),panel.background = element_rect(fill = NA))
+meanPlot =meanPlot+ theme(plot.title = element_text(hjust = 0.5))
+
+meanPlot
+dev.off()
+```
+
+
+```{r plot full coverage}
+pdf(
+  "./PRJDB5282_full_cov.pdf")
+  x = 1:100
+ 
+   color=rgb(0,0,0,alpha=0.25) 
+   par(mai=c(0.82,0.82,0.41,0.12))
+    plot(
+  x,
+ Rev2_CAGE_A01,col.axis="black",font.axis=2,
+  type = 'l',col= color,
+ main = list("mES | PRJDB5282 | C1 CAGE",cex=1.5,col = "black",font=2),
+ ylab = list("Gene coverage", col = "black",cex=1.5,font=2),
+ xlab = list("Gene body percentile (5'-> 3')", col = "black",cex=1.5,font=2),
+ col.main = "blue",cex.lab=3,font.lab=2)
+lines(x,Rev2_CAGE_A02,type='l',col= color)
+lines(x,Rev2_CAGE_A03,type='l',col= color)
+lines(x,Rev2_CAGE_A04,type='l',col= color)
+lines(x,Rev2_CAGE_A05,type='l',col= color)
+lines(x,Rev2_CAGE_A06,type='l',col= color)
+lines(x,Rev2_CAGE_A07,type='l',col= color)
+lines(x,Rev2_CAGE_A08,type='l',col= color)
+lines(x,Rev2_CAGE_A09,type='l',col= color)
+lines(x,Rev2_CAGE_A10,type='l',col= color)
+lines(x,Rev2_CAGE_A11,type='l',col= color)
+lines(x,Rev2_CAGE_A12,type='l',col= color)
+lines(x,Rev2_CAGE_B01,type='l',col= color)
+lines(x,Rev2_CAGE_B02,type='l',col= color)
+lines(x,Rev2_CAGE_B03,type='l',col= color)
+lines(x,Rev2_CAGE_B04,type='l',col= color)
+lines(x,Rev2_CAGE_B05,type='l',col= color)
+lines(x,Rev2_CAGE_B06,type='l',col= color)
+lines(x,Rev2_CAGE_B07,type='l',col= color)
+lines(x,Rev2_CAGE_B08,type='l',col= color)
+lines(x,Rev2_CAGE_B09,type='l',col= color)
+lines(x,Rev2_CAGE_B10,type='l',col= color)
+lines(x,Rev2_CAGE_B11,type='l',col= color)
+lines(x,Rev2_CAGE_B12,type='l',col= color)
+lines(x,Rev2_CAGE_C01,type='l',col= color)
+lines(x,Rev2_CAGE_C02,type='l',col= color)
+lines(x,Rev2_CAGE_C03,type='l',col= color)
+lines(x,Rev2_CAGE_C04,type='l',col= color)
+lines(x,Rev2_CAGE_C05,type='l',col= color)
+lines(x,Rev2_CAGE_C06,type='l',col= color)
+lines(x,Rev2_CAGE_C07,type='l',col= color)
+lines(x,Rev2_CAGE_C08,type='l',col= color)
+lines(x,Rev2_CAGE_C09,type='l',col= color)
+lines(x,Rev2_CAGE_C10,type='l',col= color)
+lines(x,Rev2_CAGE_C11,type='l',col= color)
+lines(x,Rev2_CAGE_C12,type='l',col= color)
+lines(x,Rev2_CAGE_D01,type='l',col= color)
+lines(x,Rev2_CAGE_D02,type='l',col= color)
+lines(x,Rev2_CAGE_D03,type='l',col= color)
+lines(x,Rev2_CAGE_D04,type='l',col= color)
+lines(x,Rev2_CAGE_D05,type='l',col= color)
+lines(x,Rev2_CAGE_D06,type='l',col= color)
+lines(x,Rev2_CAGE_D07,type='l',col= color)
+lines(x,Rev2_CAGE_D08,type='l',col= color)
+lines(x,Rev2_CAGE_D09,type='l',col= color)
+lines(x,Rev2_CAGE_D10,type='l',col= color)
+lines(x,Rev2_CAGE_D11,type='l',col= color)
+lines(x,Rev2_CAGE_D12,type='l',col= color)
+lines(x,Rev2_CAGE_E01,type='l',col= color)
+lines(x,Rev2_CAGE_E02,type='l',col= color)
+lines(x,Rev2_CAGE_E03,type='l',col= color)
+lines(x,Rev2_CAGE_E04,type='l',col= color)
+lines(x,Rev2_CAGE_E05,type='l',col= color)
+lines(x,Rev2_CAGE_E06,type='l',col= color)
+lines(x,Rev2_CAGE_E07,type='l',col= color)
+lines(x,Rev2_CAGE_E08,type='l',col= color)
+lines(x,Rev2_CAGE_E09,type='l',col= color)
+lines(x,Rev2_CAGE_E10,type='l',col= color)
+lines(x,Rev2_CAGE_E11,type='l',col= color)
+lines(x,Rev2_CAGE_E12,type='l',col= color)
+lines(x,Rev2_CAGE_F01,type='l',col= color)
+lines(x,Rev2_CAGE_F02,type='l',col= color)
+lines(x,Rev2_CAGE_F03,type='l',col= color)
+lines(x,Rev2_CAGE_F04,type='l',col= color)
+lines(x,Rev2_CAGE_F05,type='l',col= color)
+lines(x,Rev2_CAGE_F06,type='l',col= color)
+lines(x,Rev2_CAGE_F07,type='l',col= color)
+lines(x,Rev2_CAGE_F08,type='l',col= color)
+lines(x,Rev2_CAGE_F09,type='l',col= color)
+lines(x,Rev2_CAGE_F10,type='l',col= color)
+lines(x,Rev2_CAGE_F11,type='l',col= color)
+lines(x,Rev2_CAGE_F12,type='l',col= color)
+lines(x,Rev2_CAGE_G01,type='l',col= color)
+lines(x,Rev2_CAGE_G02,type='l',col= color)
+lines(x,Rev2_CAGE_G03,type='l',col= color)
+lines(x,Rev2_CAGE_G04,type='l',col= color)
+lines(x,Rev2_CAGE_G05,type='l',col= color)
+lines(x,Rev2_CAGE_G06,type='l',col= color)
+lines(x,Rev2_CAGE_G07,type='l',col= color)
+lines(x,Rev2_CAGE_G08,type='l',col= color)
+lines(x,Rev2_CAGE_G09,type='l',col= color)
+lines(x,Rev2_CAGE_G10,type='l',col= color)
+lines(x,Rev2_CAGE_G11,type='l',col= color)
+lines(x,Rev2_CAGE_G12,type='l',col= color)
+lines(x,Rev2_CAGE_H01,type='l',col= color)
+lines(x,Rev2_CAGE_H02,type='l',col= color)
+lines(x,Rev2_CAGE_H03,type='l',col= color)
+lines(x,Rev2_CAGE_H04,type='l',col= color)
+lines(x,Rev2_CAGE_H05,type='l',col= color)
+lines(x,Rev2_CAGE_H06,type='l',col= color)
+lines(x,Rev2_CAGE_H07,type='l',col= color)
+lines(x,Rev2_CAGE_H08,type='l',col= color)
+lines(x,Rev2_CAGE_H09,type='l',col= color)
+lines(x,Rev2_CAGE_H10,type='l',col= color)
+lines(x,Rev2_CAGE_H11,type='l',col= color)
+lines(x,Rev2_CAGE_H12,type='l',col= color)
+box(lty = "solid", col = 'black',lwd=3)
+axis(side=1,lwd=2,lwd.ticks=4,col.ticks="black")
+axis(side=2,lwd=3,lwd.ticks=4,col.ticks="black")
+dev.off()
+```
+
+
+dev.off()
+
+```
+

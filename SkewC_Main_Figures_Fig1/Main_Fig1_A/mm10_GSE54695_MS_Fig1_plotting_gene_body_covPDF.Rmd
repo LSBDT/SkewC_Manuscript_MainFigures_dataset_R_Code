@@ -1,0 +1,107 @@
+---
+title:  "GSE54695"
+author: "Imad Abugessaisa"
+date:   "Jun 05, 2019"
+output: html_document
+---
+
+```{r echo=FALSE}
+options(width=100)
+knitr::opts_knit$set(verbose = TRUE)
+```
+
+## Perform apoptosis analysis on GSE54695
+
+```{r cars}
+library(dplyr)
+library(Rmisc)
+library(ggplot2)
+library(knitr)
+library(reshape2)
+```
+
+Summary
+-------
+## extract the FPKM table GSE54695_FPKM_mereged_Apoptosis_genes
+The 'GSE54695_FPKM_mereged_Apoptosis_genes' table was gerangray
+
+``` {r reshap and matrix formtting}
+GSE54695Coverage_means_DF_melted  <-  melt(GSE54695Coverage_means_DF,id=c("Annotation"))
+
+## reanme annoation column values
+GSE54695Coverage_means_DF_melted[1:160,1] <- "GSE54695"
+write.table(GSE54695Coverage_means_DF$Annotation,file ="GSE54695_cellids.tsv",sep = "\t",quote = F,
+            row.names = F,col.names = F)
+```
+
+## Plotting of the mean coveage graph
+```{r plotting}
+GSE54695Coverage_means_DF_melted_tgc <-
+  summarySE(GSE54695Coverage_means_DF_melted,measurevar = "value",groupvars =c("Annotation","variable"))
+GSE54695Coverage_means_DF_melted_pd <-
+ # position_dodge(0.1) # move them .05 to the left and right
+png(filename = "./GSE54695_mean_cov.png",width = 400,height = 400,res = 70)
+ meanPlot <- ggplot(GSE54695Coverage_means_DF_melted_tgc, aes(x=variable, y=value)) +
+  geom_errorbar(aes(ymin=value-ci, ymax=value+ci)) +
+  geom_line(aes(group=Annotation)) 
+meanPlot =meanPlot+ geom_point(aes(group=1), size=2, shape=21, fill="white") + 
+  scale_x_discrete(labels  = c(10, 20,30,40,50,60,70,80,90,100)) + 
+  labs(x= "μ of the gene body percentile (5'-> 3')") + 
+  labs(y= "Gene coverage")+
+  labs(title ="mES | GSE54695 | CEL-seq")
+meanPlot =meanPlot+ theme(plot.title = element_text(face = "bold", colour="black", size = 20,margin=margin(0,0,3,0))) 
+meanPlot =meanPlot+ theme(axis.ticks = element_line(colour = 'black',size = 1.2,linetype = 'dashed'))
+meanPlot =meanPlot+ theme(axis.ticks.length=unit(.2, "cm"))
+meanPlot =meanPlot+ theme(axis.title.x = element_text(face="bold", colour="black", size=18,family = "Times")) 
+meanPlot =meanPlot+ theme(axis.title.y = element_text(face = "bold", colour="black", size=18,family = "Times"))
+meanPlot =meanPlot+ theme(legend.position="none")
+meanPlot =meanPlot+ theme(axis.text = element_text(face = "bold", colour="black", size=18)) 
+meanPlot =meanPlot+ theme(panel.border  = element_rect(colour = "black",fill = NA,size = 2.2),panel.background = element_rect(fill = NA))
+meanPlot =meanPlot+ theme(plot.title = element_text(hjust = 0.5))
+
+meanPlot
+dev.off()
+```
+
+
+```{r plot full coverage}
+pdf(
+  "./GSE54695_full_cov.pdf")
+  x = 1:100
+ 
+   color=rgb(0,0,0,alpha=0.25) 
+   par(mai=c(0.82,0.82,0.41,0.12))
+    plot(
+  x,
+ SRR1161549,col.axis="black",font.axis=2,
+  type = 'l',col= color,
+ main = list("mES | GSE54695 | CEL-seq",cex=1.5,col = "black",font=2),
+ ylab = list("Gene coverage", col = "black",cex=1.5,font=2),
+ xlab = list("Gene body percentile (5'-> 3')", col = "black",cex=1.5,font=2),
+ col.main = "blue",cex.lab=3,font.lab=2)
+lines(x,SRR1161550,type='l',col= color)
+lines(x,SRR1161551,type='l',col= color)
+lines(x,SRR1161552,type='l',col= color)
+lines(x,SRR1161553,type='l',col= color)
+lines(x,SRR1161554,type='l',col= color)
+lines(x,SRR1161555,type='l',col= color)
+lines(x,SRR1161556,type='l',col= color)
+lines(x,SRR1161557,type='l',col= color)
+lines(x,SRR1161558,type='l',col= color)
+lines(x,SRR1161559,type='l',col= color)
+lines(x,SRR1161560,type='l',col= color)
+lines(x,SRR1161561,type='l',col= color)
+lines(x,SRR1161562,type='l',col= color)
+lines(x,SRR1161563,type='l',col= color)
+lines(x,SRR1161564,type='l',col= color)
+box(lty = "solid", col = 'black',lwd=3)
+axis(side=1,lwd=2,lwd.ticks=4,col.ticks="black")
+axis(side=2,lwd=3,lwd.ticks=4,col.ticks="black")
+dev.off()
+```
+
+
+dev.off()
+
+```
+

@@ -1,0 +1,10 @@
+p.adj	Gene
+Skewed_coverage_cells.Good_cells	0.0000335767451353775	B2m
+Skewed_coverage_cells.Good_cells.1	0	Gapdh
+Skewed_coverage_cells.Good_cells.2	0.321551357392244	Actb
+Skewed_coverage_cells.Good_cells.3	0	Hprt
+Skewed_coverage_cells.Good_cells.4	0	Ppia
+Skewed_coverage_cells.Good_cells.5	0.000000937829815583768	Sdha
+Skewed_coverage_cells.Good_cells.6	0.00000000457978355239419	Tbp
+Skewed_coverage_cells.Good_cells.7	0.0000000188012658774994	Tfrc
+Skewed_coverage_cells.Good_cells.8	0	Ywhaz
